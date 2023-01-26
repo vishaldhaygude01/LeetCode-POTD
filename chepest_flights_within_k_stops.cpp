@@ -1,19 +1,51 @@
 class Solution
 {
 public:
-    int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int k)
+    int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dist, int k)
     {
-        vector<vector<int>> dp(2, vector<int>(n, INT_MAX >> 1));
-        dp[0][src] = dp[1][src] = 0;
-        for (int i = 1; i <= k + 1; i++)
+        vector<int> distance(n, INT_MAX);
+
+        unordered_map<int, vector<pair<int, int>>> adj;
+        for (vector<int> &vec : flights)
         {
-            for (vector<int> &flight : flights)
-            {
-                int prev_node = flight[0], cur_node = flight[1], cur_dist = flight[2];
-                dp[i & 1][cur_node] = min(dp[i & 1][cur_node],
-                                          dp[(i - 1) & 1][prev_node] + cur_dist);
-            }
+            int u = vec[0];
+            int v = vec[1];
+            int cost = vec[2];
+
+            adj[u].push_back({v, cost});
         }
-        return dp[(k + 1) & 1][dst] == INT_MAX >> 1 ? -1 : dp[(k + 1) & 1][dst];
+
+        // BFS
+        queue<pair<int, int>> q;
+        q.push({src, 0});
+        distance[src] = 0;
+
+        int steps = 0;
+        while (!q.empty() && steps <= k)
+        {
+            int size = q.size();
+            while (size--)
+            {
+                int u = q.front().first;
+                int d = q.front().second;
+                q.pop();
+
+                for (pair<int, int> &p : adj[u])
+                {
+                    int v = p.first;
+                    int cost = p.second;
+
+                    if (distance[v] > d + cost)
+                    {
+                        distance[v] = d + cost;
+                        q.push({v, d + cost});
+                    }
+                }
+            }
+            steps++;
+        }
+        if (distance[dist] == INT_MAX)
+            return -1;
+        return distance[dist];
     }
 };
