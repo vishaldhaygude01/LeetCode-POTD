@@ -2,7 +2,7 @@ class Solution
 {
 public:
     int findMaximizedCapital(int k, int w, vector<int> &profits, vector<int> &capital)
-    {
+    {   
         int n = profits.size();
         vector<pair<int, int>> projects;
 
