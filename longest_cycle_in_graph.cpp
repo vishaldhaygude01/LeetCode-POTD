@@ -5,7 +5,6 @@ public:
 
     void dfs(int u, vector<int> &edges, vector<bool> &visited, vector<int> &dist, vector<bool> &inRecursion)
     {
-
         if (u != -1)
         {
             visited[u] = true;
