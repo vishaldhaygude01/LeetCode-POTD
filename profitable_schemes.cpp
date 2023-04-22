@@ -1,7 +1,7 @@
 class Solution
 {
 public:
-    int t[101][101][101];
+int t[101][101][101];
     int thresholdProfit;
     int N;
     const int MOD = 1e9 + 7;
