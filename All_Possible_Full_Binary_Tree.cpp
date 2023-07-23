@@ -1,45 +1,49 @@
-unordered_map<int, vector<TreeNode *>> mp;
-vector<TreeNode *> solve(int n)
+class Solution
 {
-
-    if (n % 2 == 0) // Even nodes can't make Full Binary Tree
-        return {};
-
-    if (n == 1)
-    {
-        TreeNode *node = new TreeNode(0);
-        return {node};
-    }
-
-    if (mp.find(n) != mp.end())
-        return mp[n];
-
-    vector<TreeNode *> result;
-
-    for (int i = 1; i < n; i += 2)
+public:
+    unordered_map<int, vector<TreeNode *>> mp;
+    vector<TreeNode *> solve(int n)
     {
 
-        vector<TreeNode *> leftAllFBT = allPossibleFBT(i);
-        vector<TreeNode *> rightAllFBT = allPossibleFBT(n - i - 1);
+        if (n % 2 == 0) // Even nodes can't make Full Binary Tree
+            return {};
 
-        for (auto &l : leftAllFBT)
+        if (n == 1)
+        {
+            TreeNode *node = new TreeNode(0);
+            return {node};
+        }
+
+        if (mp.find(n) != mp.end())
+            return mp[n];
+
+        vector<TreeNode *> result;
+
+        for (int i = 1; i < n; i++)
         {
 
-            for (auto &r : rightAllFBT)
+            vector<TreeNode *> leftAllFBT = allPossibleFBT(i);
+            vector<TreeNode *> rightAllFBT = allPossibleFBT(n - i - 1);
+
+            for (auto &l : leftAllFBT)
             {
 
-                TreeNode *root = new TreeNode(0);
-                root->left = l;
-                root->right = r;
-                result.push_back(root);
+                for (auto &r : rightAllFBT)
+                {
+
+                    TreeNode *root = new TreeNode(0);
+                    root->left = l;
+                    root->right = r;
+                    result.push_back(root);
+                }
             }
         }
+
+        return mp[n] = result;
     }
 
-    return mp[n] = result;
-}
-
-vector<TreeNode *> allPossibleFBT(int n)
-{
-    return solve(n);
-}
+    vector<TreeNode *> allPossibleFBT(int n)
+    {
+        return solve(n);
+    }
+};
